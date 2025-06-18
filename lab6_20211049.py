@@ -592,4 +592,147 @@ def menu_alumnos():
 def menu_servidores():
     """Menú para gestión de servidores"""
     print("\n--- GESTIÓN DE SERVIDORES ---")
-    print("1#!/usr/bin/env python3")
+    print("1) Crear servidor")
+    print("2) Listar servidores")
+    print("3) Mostrar detalle de un servidor")
+    print("0) Volver")
+
+
+if __name__ == "__main__":
+    app = SDNApplication()
+
+    while True:
+        menu_principal()
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            nombre_archivo = input("Ingrese el nombre del archivo YAML a importar: ")
+            app.importar_datos(nombre_archivo)
+
+        elif opcion == "2":
+            nombre_archivo = input("Ingrese el nombre del archivo YAML a exportar: ")
+            app.exportar_datos(nombre_archivo)
+
+        elif opcion == "3":
+            while True:
+                menu_cursos()
+                subop = input("Seleccione una opción: ")
+
+                if subop == "1":
+                    codigo = input("Código del curso: ")
+                    nombre = input("Nombre del curso: ")
+                    estado = input("Estado (DICTANDO o INACTIVO): ")
+                    if codigo in app.cursos:
+                        print("⚠️ Ya existe un curso con ese código.")
+                    else:
+                        nuevo = Curso(codigo, nombre, estado)
+                        app.cursos[codigo] = nuevo
+                        print(f"Curso {nombre} agregado con éxito.")
+
+                elif subop == "2":
+                    print("\nLista de cursos:")
+                    for curso in app.cursos.values():
+                        print(f" - {curso}")
+
+                elif subop == "3":
+                    codigo = input("Ingrese el código del curso: ")
+                    if codigo in app.cursos:
+                        curso = app.cursos[codigo]
+                        print(curso)
+                        print("Alumnos:")
+                        for cod in curso.alumnos:
+                            alumno = app.alumnos.get(cod)
+                            if alumno:
+                                print(f" - {alumno}")
+                            else:
+                                print(f" - Código {cod} (no encontrado)")
+                        print("Servidores permitidos:")
+                        for srv in curso.servidores:
+                            print(f" - {srv.nombre}: {', '.join(srv.servicios_permitidos)}")
+                    else:
+                        print("❌ Curso no encontrado.")
+
+                elif subop == "0":
+                    break
+
+                else:
+                    print("Opción inválida.")
+
+        elif opcion == "4":
+            while True:
+                menu_alumnos()
+                subop = input("Seleccione una opción: ")
+                
+                if subop == "1":
+                    nombre = input("Nombre del alumno: ")
+                    codigo = input("Código PUCP: ")
+                    mac = input("Dirección MAC (ej. 00:11:22:33:44:55): ")
+                    if codigo in app.alumnos:
+                        print("⚠️ Ya existe un alumno con ese código.")
+                    else:
+                        nuevo = Alumno(nombre, codigo, mac)
+                        app.alumnos[codigo] = nuevo
+                        print(f"Alumno {nombre} agregado con éxito.")
+                
+                elif subop == "2":
+                    print("\nLista de alumnos:")
+                    for alumno in app.alumnos.values():
+                        print(f" - {alumno}")
+                
+                elif subop == "3":
+                    codigo = input("Ingrese el código del alumno: ")
+                    if codigo in app.alumnos:
+                        print(app.alumnos[codigo])
+                    else:
+                        print("❌ Alumno no encontrado.")
+                
+                elif subop == "0":
+                    break
+                
+                else:
+                    print("Opción inválida.")
+        
+        elif opcion == "5":
+            while True:
+                menu_servidores()
+                subop = input("Seleccione una opción: ")
+
+                if subop == "1":
+                    nombre = input("Nombre del servidor: ")
+                    ip = input("Dirección IP: ")
+                    if nombre in app.servidores:
+                        print("⚠️ Ya existe un servidor con ese nombre.")
+                    else:
+                        nuevo = Servidor(nombre, ip)
+                        app.servidores[nombre] = nuevo
+                        print(f"Servidor {nombre} agregado con éxito.")
+                
+                elif subop == "2":
+                    print("\nLista de servidores:")
+                    for servidor in app.servidores.values():
+                        print(f" - {servidor}")
+                
+                elif subop == "3":
+                    nombre = input("Nombre del servidor: ")
+                    if nombre in app.servidores:
+                        srv = app.servidores[nombre]
+                        print(f"{srv}")
+                        print("Servicios:")
+                        for s in srv.servicios:
+                            print(f" - {s}")
+                    else:
+                        print("❌ Servidor no encontrado.")
+                
+                elif subop == "0":
+                    break
+                
+                else:
+                    print("Opción inválida.")
+
+
+        elif opcion == "0":
+            print("Saliendo del sistema...")
+            break
+
+        else:
+            print("Opción no válida.")
