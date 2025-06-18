@@ -729,6 +729,13 @@ if __name__ == "__main__":
                 else:
                     print("Opción inválida.")
 
+        elif opcion == "6":
+            print("\nCursos que tienen acceso a SSH en el Servidor 1:")
+            for curso in app.cursos.values():
+                if curso.estado == "DICTANDO":
+                    for servidor in curso.servidores:
+                        if servidor.nombre == "Servidor 1" and "ssh" in servidor.servicios_permitidos:
+                            print(f" - {curso.codigo}: {curso.nombre}")
 
         elif opcion == "0":
             print("Saliendo del sistema...")
