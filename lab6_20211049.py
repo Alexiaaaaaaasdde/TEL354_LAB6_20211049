@@ -651,6 +651,38 @@ if __name__ == "__main__":
                             print(f" - {srv.nombre}: {', '.join(srv.servicios_permitidos)}")
                     else:
                         print("❌ Curso no encontrado.")
+                                
+                elif subop == "4":
+                    codigo = input("Código del curso a actualizar: ")
+                    if codigo not in app.cursos:
+                        print("❌ Curso no encontrado.")
+                        continue
+                    curso = app.cursos[codigo]
+
+                    print("\nOpciones:")
+                    print("1) Agregar alumno al curso")
+                    print("2) Eliminar alumno del curso")
+                    print("0) Cancelar")
+                    accion = input("Seleccione una opción: ")
+
+                    if accion == "1":
+                        codigo_alumno = input("Código del alumno a agregar: ")
+                        if codigo_alumno in app.alumnos:
+                            curso.agregar_alumno(codigo_alumno)
+                            print(f"Alumno {codigo_alumno} agregado al curso {codigo}.")
+                        else:
+                            print("❌ Alumno no encontrado.")
+
+                    elif accion == "2":
+                        codigo_alumno = input("Código del alumno a eliminar: ")
+                        curso.remover_alumno(codigo_alumno)
+                        print(f"Alumno {codigo_alumno} eliminado del curso {codigo}.")
+
+                    elif accion == "0":
+                        print("Acción cancelada.")
+                    else:
+                        print("Opción inválida.")
+        
 
                 elif subop == "0":
                     break
@@ -736,6 +768,39 @@ if __name__ == "__main__":
                     for servidor in curso.servidores:
                         if servidor.nombre == "Servidor 1" and "ssh" in servidor.servicios_permitidos:
                             print(f" - {curso.codigo}: {curso.nombre}")
+
+        elif opcion == "7":
+            while True:
+                print("\n--- GESTIÓN DE CONEXIONES ---")
+                print("1) Crear conexión")
+                print("2) Listar conexiones")
+                print("3) Eliminar conexión")
+                print("0) Volver")
+                subop = input("Seleccione una opción: ")
+
+                if subop == "1":
+                    cod_alumno = input("Código del alumno: ")
+                    nombre_srv = input("Nombre del servidor: ")
+                    nombre_srv = nombre_srv.strip()
+                    nombre_servicio = input("Nombre del servicio (ej. ssh): ")
+                    nombre_servicio = nombre_servicio.strip()
+
+                    app.crear_conexion(cod_alumno, nombre_srv, nombre_servicio)
+
+                elif subop == "2":
+                    for conn in app.conexiones.values():
+                        print(conn)
+
+                elif subop == "3":
+                    handler = input("Ingrese el handler de la conexión a eliminar: ")
+                    app.eliminar_conexion(handler)
+
+                elif subop == "0":
+                    break
+
+                else:
+                    print("Opción inválida.")
+
 
         elif opcion == "0":
             print("Saliendo del sistema...")
