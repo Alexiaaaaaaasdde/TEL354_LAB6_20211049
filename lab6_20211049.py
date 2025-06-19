@@ -193,7 +193,7 @@ class FloodlightController:
     def push_flow(self, dpid: str, flow_entry: Dict) -> bool:
         """Instala un flow entry en un switch específico"""
         try:
-            url = f"{self.base_url}/wm/staticentrypusher/json"
+            url = f"{self.base_url}/wm/staticflowentrypusher/insert/json"
             response = self.session.post(url, json=flow_entry)
             response.raise_for_status()
             return True
@@ -204,7 +204,7 @@ class FloodlightController:
     def delete_flow(self, dpid: str, flow_name: str) -> bool:
         """Elimina un flow entry de un switch específico"""
         try:
-            url = f"{self.base_url}/wm/staticentrypusher/json"
+            url = f"{self.base_url}/wm/staticflowentrypusher/delete/json"
             delete_entry = {
                 "switch": dpid,
                 "name": flow_name
@@ -263,7 +263,7 @@ def build_route(controller: FloodlightController, alumno: Alumno, servidor: Serv
     
     # 1. Encontrar puntos de conexión
     src_ap = get_attachment_point(controller, alumno.mac)
-    dst_ap = get_attachment_point(controller, "dummy")  # Necesitaremos la MAC del servidor
+    dst_ap = get_attachment_point(controller, "fa:16:3e:02:85:a6")  # Necesitaremos la MAC del servidor
     
     if not src_ap:
         print(f"Error: No se pudo encontrar el punto de conexión para {alumno.mac}")
@@ -599,7 +599,7 @@ def menu_servidores():
 
 
 if __name__ == "__main__":
-    app = SDNApplication()
+    app = SDNApplication(controller_ip="10.20.12.37", controller_port=8080)
 
     while True:
         menu_principal()
