@@ -599,7 +599,7 @@ def menu_servidores():
 
 
 if __name__ == "__main__":
-    app = SDNApplication(controller_ip="127.0.0.1", controller_port=8080)
+    app = SDNApplication(controller_ip="10.20.12.37", controller_port=8080)
 
     while True:
         menu_principal()
